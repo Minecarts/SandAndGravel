@@ -1,0 +1,11 @@
+name: SandAndGravel
+main: com.minecarts.verrier.sandandgravel.SandAndGravel
+version: 1.0.0
+website: http://minecarts.com
+author: Verrier
+description: >
+             A connect 4 style minigame for minecraft
+commands:
+  sag:
+    description: Main command to access SandAndGravel
+    usage: /<command> [start | stop]
