@@ -34,8 +34,6 @@ public class SandAndGravel extends JavaPlugin  {
         //Add our listeners
         pm.registerEvent(Type.PLAYER_MOVE, this.playerListener, Event.Priority.Monitor, this);
         pm.registerEvent(Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Monitor, this);
-        
-        startGame();
     }
     
     public void stopGame(){
