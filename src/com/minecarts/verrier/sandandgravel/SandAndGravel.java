@@ -26,20 +26,10 @@ public class SandAndGravel extends JavaPlugin  {
     public String playerGravel;
     
     public GameThread game;
-      
-    public void onEnable() {        
-        World world = getServer().getWorld("world");
+    public World gameWorld; 
+    
+    public void onEnable() {
         PluginManager pm = this.getServer().getPluginManager();
-        
-        //Field locations
-        Location playerLocationSand = new Location(world,45,59,18);
-        Location playerLocationGravel = new Location(world,48,59,18);
-        
-        Location fallBarLeft = new Location(world,44,67,11);
-        Location fallBarRight = new Location(world,50,67,11);
-        
-        Location gridTopLeft = new Location(world,44,66,11);
-        Location gridBottomRight = new Location(world,50,61,11);
         
         //Add our listeners
         pm.registerEvent(Type.PLAYER_MOVE, this.playerListener, Event.Priority.Monitor, this);
@@ -51,7 +41,7 @@ public class SandAndGravel extends JavaPlugin  {
     private void startGame(){
         log.info("Starting game task");
         //Launch the async task that handles the game itself
-        game = new com.minecarts.verrier.sandandgravel.game.GameThread(this);
+        game = new com.minecarts.verrier.sandandgravel.game.GameThread(this, getServer().getWorld("world"));
         this.taskId = getServer().getScheduler().scheduleAsyncRepeatingTask(this, game, 1 * 20, 5 * 20);
     }
     

@@ -2,6 +2,8 @@ package com.minecarts.verrier.sandandgravel.game;
 
 import com.minecarts.verrier.sandandgravel.*;
 
+import org.bukkit.World;
+
 public class GameThread implements Runnable {
     private SandAndGravel plugin;
     private enum gameState {
@@ -18,7 +20,7 @@ public class GameThread implements Runnable {
     private String PlayerGravel;
     
     public gameState currentState = gameState.WAITING_PLAYERS;
-    public GameThread(SandAndGravel plugin){
+    public GameThread(SandAndGravel plugin, World world){
         this.plugin = plugin;
     }
     
