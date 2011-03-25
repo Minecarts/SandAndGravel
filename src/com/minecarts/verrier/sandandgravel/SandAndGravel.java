@@ -27,6 +27,7 @@ public class SandAndGravel extends JavaPlugin  {
     
     public GameThread game;
     public World gameWorld; 
+    public boolean gameStarted = false;
     
     public void onEnable() {
         PluginManager pm = this.getServer().getPluginManager();
@@ -40,6 +41,7 @@ public class SandAndGravel extends JavaPlugin  {
         if(this.taskId != 0){
             getServer().getScheduler().cancelTask(this.taskId);
             this.taskId = 0;
+            gameStarted = false;
         }
     }
     public void startGame(){
@@ -47,6 +49,7 @@ public class SandAndGravel extends JavaPlugin  {
         //Launch the async task that handles the game itself
         game = new com.minecarts.verrier.sandandgravel.game.GameThread(this, getServer().getWorld("world"));
         this.taskId = getServer().getScheduler().scheduleAsyncRepeatingTask(this, game, 1 * 20, 5 * 20);
+        gameStarted = true;
     }
        
     public void onDisable(){
