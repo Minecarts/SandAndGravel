@@ -37,17 +37,19 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
         
         Double distanceFromSand = newVector.distance(playerLocationSand);
         Double distanceFromGravel = newVector.distance(playerLocationGravel);
-        
+       
+        player.sendMessage(String.format("Distance from sand: %.3f, gravel: %.3f",distanceFromSand, distanceFromGravel));
+       
         //Check if they're a current player in the game, if so.. make sure they're still in their spots
         //  and they didn't want to leave
-            if(playerName.equals(sandPlayer.getName())){
+            if(sandPlayer != null && playerName.equals(sandPlayer.getName())){
                 if(distanceFromSand > 2){
                     //they left
                     sandPlayer = null;
                     plugin.stopGame();
                 }
             }
-            if(playerName.equals(gravelPlayer.getName())){
+            if(gravelPlayer != null &&  playerName.equals(gravelPlayer.getName())){
                 if(distanceFromGravel > 2){
                     //they left
                     gravelPlayer = null;
@@ -56,20 +58,20 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
             }
         
         //If they weren't one of our players, lets see if they're within range of the spot now
-            if(distanceFromSand < 2 && sandPlayer == null){
+            if(distanceFromSand <= 2 && sandPlayer == null){
                 //They're our new sand player!
                 sandPlayer = player;
                 player.sendMessage("You are now the sand player!");
                 plugin.log.info(String.format("%s is now the sand player.",player.getName()));
-            } else 
-            if (distanceFromSand < 2 && gravelPlayer == null){
+            } 
+            else if (distanceFromGravel <= 2 && gravelPlayer == null){
                 gravelPlayer = player;
                 player.sendMessage("You are now the gravel player!");
                 plugin.log.info(String.format("%s is now the gravel player.",player.getName()));
             }
             
         //Start the game if both plays are there
-            if(gravelPlayer != null && sandPlayer != null){
+            if(!plugin.gameStarted && gravelPlayer != null && sandPlayer != null){
                 plugin.startGame();
             }
     }
