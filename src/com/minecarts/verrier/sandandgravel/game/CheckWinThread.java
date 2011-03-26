@@ -48,9 +48,7 @@ public class CheckWinThread implements Runnable {
     public void run(){
         int usedBlocks = 0;
         int z = Locations.gridTopLeft.getBlockZ() + 1;
-        
-        int sandCounter, gravelCounter;
-        
+                
         //Find the top most block of the column (the one the player just placed)
         for(int y = Locations.gridTopLeft.getBlockY(), yMin = y-6; y>yMin; y--){
             Block b = Game.world.getBlockAt(column,y,z);
