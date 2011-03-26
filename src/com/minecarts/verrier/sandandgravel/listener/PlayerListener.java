@@ -37,37 +37,29 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
         if(playerAction == Action.LEFT_CLICK_AIR){
             Player player = event.getPlayer();
             if(Game.playerSand != null && Game.playerGravel != null){
-                if(player == Game.playerSand && Game.currentState == Game.State.TURN_SAND){
-                    Block targetBlock = player.getTargetBlock(null,40);
+                Block targetBlock = player.getTargetBlock(null,40);
+                //Check that they clicked on the board (TODO: Y direction)
+                if(targetBlock.getX() >= Locations.gridTopLeft.getX() && targetBlock.getX() <= Locations.gridBottomRight.getX()){
+                    Block dropBlock = Game.world.getBlockAt(
+                        targetBlock.getX(), 
+                        Locations.gridTopLeft.getBlockY() + 1,
+                        Locations.gridTopLeft.getBlockZ() + 1);
                     
-                    //Check that they clicked on the board (TODO: Y direction)
-                    if(targetBlock.getX() >= Locations.fallBarLeft.getX() && targetBlock.getX() <= Locations.fallBarRight.getX()){
-                        Block dropBlock = Game.world.getBlockAt(
-                                targetBlock.getX(), 
-                                (int)Locations.fallBarLeft.getY(), 
-                                (int)Locations.fallBarLeft.getZ() + 1);
+                    if(player == Game.playerSand && Game.currentState == Game.State.TURN_SAND){
                         dropBlock.setType(Material.SAND);
                         Game.checkWin(Game.State.TURN_GRAVEL, targetBlock.getX());
+                        return;
                     }
-                    return;
-                }
-                if(player == Game.playerGravel && Game.currentState == Game.State.TURN_GRAVEL){
-                    Block targetBlock = player.getTargetBlock(null,40);
-                    //Check that they clicked on the board (TODO: Y direction)
-                    if(targetBlock.getX() >= Locations.fallBarLeft.getX() && targetBlock.getX() <= Locations.fallBarRight.getX()){
-                        Block dropBlock = Game.world.getBlockAt(
-                                targetBlock.getX(), 
-                                (int)Locations.fallBarLeft.getY(), 
-                                (int)Locations.fallBarLeft.getZ() + 1);
+                    if(player == Game.playerGravel && Game.currentState == Game.State.TURN_GRAVEL){
                         dropBlock.setType(Material.GRAVEL);
                         Game.checkWin(Game.State.TURN_SAND, targetBlock.getX());
+                        return;
                     }
-                    return;
                 }
             } else if(Game.playerSand == event.getPlayer() && Game.playerGravel == null){
-                player.sendMessage("Waiting for a gravel player.");
+                player.sendMessage(MessageFormatter.game.playerWaiting("Gravel"));
             } else if (Game.playerGravel == event.getPlayer() && Game.playerSand == null){
-                player.sendMessage("Waiting for a sand player.");
+                player.sendMessage(MessageFormatter.game.playerWaiting("Sand"));
             }
         }
     }//onPlayerInteract()
