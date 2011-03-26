@@ -51,9 +51,6 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                     dropBlock.setType(Material.SAND);
                     checkWin(Game.State.TURN_GRAVEL);
                 }
-
-                
-                //Handle their thing.
                 return;
             }
             
@@ -70,9 +67,6 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                     dropBlock.setType(Material.GRAVEL);
                     checkWin(Game.State.TURN_SAND);
                 }
-
-                
-                //Handle their thing.
                 return;
             }
         }
@@ -99,9 +93,8 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                     //they left
                     Game.playerSand = null;
                     player.sendMessage("You are no longer the sand player!");
-                    Game.currentState = Game.State.WAITING_PLAYERS;
-                    Game.gameStarted = false;
-                    plugin.stopGame();
+                    
+                    Game.changeState(Game.State.WAITING_PLAYERS);
                 }
             }
             if(Game.playerGravel != null &&  playerName.equals(Game.playerGravel.getName())){
@@ -111,9 +104,8 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                     player.sendMessage("You are no longer the gravel player!");
                     //Check to see if the game is running before calling stop? Doesn't matter
                     //  but might be a better option
-                    Game.currentState = Game.State.WAITING_PLAYERS;
-                    Game.gameStarted = false;
-                    plugin.stopGame();
+                    
+                    Game.changeState(Game.State.WAITING_PLAYERS);
                 }
             }
         
@@ -133,9 +125,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                 
             //Start the game if both plays are there
                 if(!Game.gameStarted && Game.playerGravel != null && Game.playerSand!= null){
-                    Game.currentState = Game.State.TURN_SAND; //Sand goes first, but maybe this will be random
-                    Game.gameStarted = true;
-                    plugin.startGame();
+                    Game.changeState(Game.State.TURN_SAND); //Sand goes first, but maybe this will be random
                 }
         }
     }//onPlayerMove()

@@ -28,11 +28,10 @@ public class CheckWinThread implements Runnable {
             sandCounter = 0;
             gravelCounter = 0;
             for(int x = Locations.gridTopLeft.getBlockX(), xMax = x+7; x<xMax; x++){
-                plugin.log.info(String.format("[SCORE] Block: X: %s Y: %s Z: %s",x,y,z));
                 Block b = Game.world.getBlockAt(x,y,z);
                 if(b.getType() == Material.SAND){
                     if(++sandCounter == 4){
-                        Game.currentState = Game.State.WINNER_SAND;
+                        Game.changeState(Game.State.WINNER_SAND);
                         return;
                     }
                     gravelCounter = 0;
@@ -40,7 +39,7 @@ public class CheckWinThread implements Runnable {
                 
                 if(b.getType() == Material.GRAVEL){
                     if(++gravelCounter == 4){
-                        Game.currentState = Game.State.WINNER_GRAVEL;
+                        Game.changeState(Game.State.WINNER_GRAVEL);
                         return;
                     }
                     sandCounter = 0;
