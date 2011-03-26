@@ -84,7 +84,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                 if(distanceFromSand > 2.3){
                     //they left
                     Game.playerSand = null;
-                    player.sendMessage(MessageFormatter.player.leftPlayer("sand"));
+                    player.sendMessage(MessageFormatter.player.leftPlayer("Sand"));
                     Game.changeState(Game.State.WAITING_PLAYERS);
                 }
             }
@@ -92,7 +92,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                 if(distanceFromGravel > 2.3){
                     //they left
                     Game.playerGravel = null;
-                    player.sendMessage(MessageFormatter.player.leftPlayer("gravel"));
+                    player.sendMessage(MessageFormatter.player.leftPlayer("Gravel"));
                     
                     //Check to see if the game is running before calling stop? Doesn't matter
                     //  but might be a better option
@@ -105,12 +105,12 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                 if(distanceFromSand <= 2.3 && Game.playerSand == null){
                     //They're our new sand player!
                     Game.playerSand = player;
-                    player.sendMessage(MessageFormatter.player.joinPlayer("sand"));
+                    player.sendMessage(MessageFormatter.player.joinPlayer("Sand"));
                     plugin.log.info(String.format("%s is now the sand player.",player.getName()));
                 } 
                 else if (distanceFromGravel <= 2.3 && Game.playerGravel == null){
                     Game.playerGravel = player;
-                    player.sendMessage(MessageFormatter.player.joinPlayer("gravel"));
+                    player.sendMessage(MessageFormatter.player.joinPlayer("Gravel"));
                     plugin.log.info(String.format("%s is now the gravel player.",player.getName()));
                 }
                 
