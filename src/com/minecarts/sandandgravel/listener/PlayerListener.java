@@ -1,9 +1,9 @@
-package com.minecarts.verrier.sandandgravel.listener;
+package com.minecarts.sandandgravel.listener;
 
-import com.minecarts.verrier.sandandgravel.*;
-import com.minecarts.verrier.sandandgravel.game.Game;
-import com.minecarts.verrier.sandandgravel.game.Locations;
-import com.minecarts.verrier.sandandgravel.game.MessageFormatter;
+import com.minecarts.sandandgravel.*;
+import com.minecarts.sandandgravel.game.Game;
+import com.minecarts.sandandgravel.game.Locations;
+import com.minecarts.sandandgravel.game.MessageFormatter;
 
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -25,8 +25,8 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
         this.plugin = plugin;
         
         //Create actual Locations from our vectors
-        playerLocationSand = com.minecarts.verrier.sandandgravel.game.Locations.playerLocationSand;
-        playerLocationGravel = com.minecarts.verrier.sandandgravel.game.Locations.playerLocationGravel;
+        playerLocationSand = com.minecarts.sandandgravel.game.Locations.playerLocationSand;
+        playerLocationGravel = com.minecarts.sandandgravel.game.Locations.playerLocationGravel;
         
     }
     

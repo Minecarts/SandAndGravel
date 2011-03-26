@@ -1,4 +1,4 @@
-package com.minecarts.verrier.sandandgravel;
+package com.minecarts.sandandgravel;
 
 import java.util.logging.*;
 
@@ -13,8 +13,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.minecarts.verrier.sandandgravel.listener.*;
-import com.minecarts.verrier.sandandgravel.game.*;
+import com.minecarts.sandandgravel.game.*;
+import com.minecarts.sandandgravel.listener.*;
 
 public class SandAndGravel extends JavaPlugin  {
     public Logger log = Logger.getLogger("com.minecarts.sandandgravel");

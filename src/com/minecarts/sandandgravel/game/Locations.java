@@ -1,4 +1,4 @@
-package com.minecarts.verrier.sandandgravel.game;
+package com.minecarts.sandandgravel.game;
 
 import org.bukkit.util.Vector;
 

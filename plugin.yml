@@ -1,5 +1,5 @@
 name: SandAndGravel
-main: com.minecarts.verrier.sandandgravel.SandAndGravel
+main: com.minecarts.sandandgravel.SandAndGravel
 version: 1.0.0
 website: http://minecarts.com
 author: Verrier

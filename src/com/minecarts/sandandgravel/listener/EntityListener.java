@@ -1,6 +1,6 @@
-package com.minecarts.verrier.sandandgravel.listener;
+package com.minecarts.sandandgravel.listener;
 
-import com.minecarts.verrier.sandandgravel.SandAndGravel;
+import com.minecarts.sandandgravel.SandAndGravel;
 
 public class EntityListener extends org.bukkit.event.entity.EntityListener{
     private SandAndGravel plugin;

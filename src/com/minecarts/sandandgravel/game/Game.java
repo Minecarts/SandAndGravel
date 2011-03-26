@@ -1,4 +1,4 @@
-package com.minecarts.verrier.sandandgravel.game;
+package com.minecarts.sandandgravel.game;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ public class Game {
     public static Player playerGravel = null;
 
     public static World world = null;
-    public static com.minecarts.verrier.sandandgravel.SandAndGravel plugin = null;
+    public static com.minecarts.sandandgravel.SandAndGravel plugin = null;
     public static final Logger log = Logger.getLogger("com.minecarts.sandandgravel");
 
     public static enum State {
@@ -86,7 +86,7 @@ public class Game {
 
     public static void checkWin(Game.State nextTurn, int column){
         Game.changeState(Game.State.CHECK_WIN);
-        Runnable checkWin = new com.minecarts.verrier.sandandgravel.game.CheckWinThread(plugin, nextTurn, column);
+        Runnable checkWin = new com.minecarts.sandandgravel.game.CheckWinThread(plugin, nextTurn, column);
         plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, checkWin, 20); //1 second later, should be more for fall time
     }
 
