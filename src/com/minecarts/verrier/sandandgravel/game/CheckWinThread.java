@@ -22,10 +22,10 @@ public class CheckWinThread implements Runnable {
     
     private boolean findMove(Vector position, Vector direction, int moves, Material blockType) throws WinnerException{
         Block b = Game.world.getBlockAt(position.toLocation(Game.world));
-        //plugin.log.info(String.format("Looking for [%s]: %s, %s, %s (%s) [Move: %s]",blockType,position.getBlockX(), position.getBlockY(), position.getBlockZ(),b.getType(),moves));
+        plugin.log.finest(String.format("Looking for [%s]: %s, %s, %s (%s) [Move: %s]",blockType,position.getBlockX(), position.getBlockY(), position.getBlockZ(),b.getType(),moves));
         if(b.getType() == blockType){
             if(moves == 4){
-                plugin.log.info("WINNING MOVE FOUND!" + direction);
+                plugin.log.finest("WINNING MOVE FOUND! Direction: " + direction);
                 throw new WinnerException(blockType, direction);
             } else {
                 return findMove(position.add(direction),direction,++moves,blockType);
@@ -73,8 +73,8 @@ public class CheckWinThread implements Runnable {
                     for(int i = 0; i<4;i++){
                         Vector temp = e.direction.clone();
                         Block bl = Game.world.getBlockAt(b.getLocation().toVector().add(temp.multiply(i)).toLocation(Game.world));
-                        //plugin.log.info(String.format("[%s] Setting block %s, %s, %s [%s]", i, bl.getLocation().getBlockX(), bl.getLocation().getBlockY(), bl.getLocation().getBlockZ(), e.direction));
-                        bl.setType(Material.GOLD_BLOCK);
+                        plugin.log.finest(String.format("[%s] Setting block %s, %s, %s [%s]", i, bl.getLocation().getBlockX(), bl.getLocation().getBlockY(), bl.getLocation().getBlockZ(), e.direction));
+                        bl.setType(Material.DIAMOND_BLOCK);
                        
                     }                    
                     

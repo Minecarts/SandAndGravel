@@ -29,6 +29,7 @@ public class SandAndGravel extends JavaPlugin  {
         log.setLevel(Level.FINER);
         
         Game.world = this.getServer().getWorld("world");
+        Game.plugin = this;
         
         //Add our listeners
         pm.registerEvent(Type.PLAYER_MOVE, this.playerListener, Event.Priority.Monitor, this);

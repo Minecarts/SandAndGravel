@@ -33,7 +33,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
         Runnable checkWin = new com.minecarts.verrier.sandandgravel.game.CheckWinThread(plugin, nextTurn, column);
         plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, checkWin, 20); //1 second later, should be more for fall time
     }
-    
+        
     public void onPlayerInteract(PlayerInteractEvent event){
         Action playerAction = event.getAction();
         if(playerAction == Action.LEFT_CLICK_AIR){
@@ -49,6 +49,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                                 (int)Locations.fallBarLeft.getY(), 
                                 (int)Locations.fallBarLeft.getZ() + 1);
                         dropBlock.setType(Material.SAND);
+                        Game.changeState(Game.State.CHECK_WIN);
                         checkWin(Game.State.TURN_GRAVEL, targetBlock.getX());
                     }
                     return;
@@ -62,6 +63,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                                 (int)Locations.fallBarLeft.getY(), 
                                 (int)Locations.fallBarLeft.getZ() + 1);
                         dropBlock.setType(Material.GRAVEL);
+                        Game.changeState(Game.State.CHECK_WIN);
                         checkWin(Game.State.TURN_SAND, targetBlock.getX());
                     }
                     return;
@@ -91,7 +93,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
         //Check if they're a current player in the game, if so.. make sure they're still in their spots
         //  and they didn't want to leave
             if(Game.playerSand != null && playerName.equals(Game.playerSand.getName())){
-                if(distanceFromSand > 2){
+                if(distanceFromSand > 2.3){
                     //they left
                     Game.playerSand = null;
                     player.sendMessage("You are no longer the sand player!");
@@ -100,7 +102,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                 }
             }
             if(Game.playerGravel != null &&  playerName.equals(Game.playerGravel.getName())){
-                if(distanceFromGravel > 2){
+                if(distanceFromGravel > 2.3){
                     //they left
                     Game.playerGravel = null;
                     player.sendMessage("You are no longer the gravel player!");
@@ -113,13 +115,13 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
         
         if(!Game.gameStarted){ //If the game hasn't started
             //If they weren't one of our players, lets see if they're within range of the spot now
-                if(distanceFromSand <= 2 && Game.playerSand == null){
+                if(distanceFromSand <= 2.3 && Game.playerSand == null){
                     //They're our new sand player!
                     Game.playerSand = player;
                     player.sendMessage("You are now the sand player!");
                     plugin.log.info(String.format("%s is now the sand player.",player.getName()));
                 } 
-                else if (distanceFromGravel <= 2 && Game.playerGravel == null){
+                else if (distanceFromGravel <= 2.3 && Game.playerGravel == null){
                     Game.playerGravel = player;
                     player.sendMessage("You are now the gravel player!");
                     plugin.log.info(String.format("%s is now the gravel player.",player.getName()));

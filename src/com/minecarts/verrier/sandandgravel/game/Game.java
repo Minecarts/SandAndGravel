@@ -4,6 +4,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.Material;
 import org.bukkit.World;
+
 import java.util.logging.Logger;
 
 public class Game {
@@ -15,7 +16,8 @@ public class Game {
     public static Player playerGravel = null;
     
     public static World world = null;
-    public static final Logger log = Logger.getLogger("Minecraft.SandAndGravel.Game");
+    public static com.minecarts.verrier.sandandgravel.SandAndGravel plugin = null;
+    public static final Logger log = Logger.getLogger("com.minecarts.sandandgravel");
     
     public static enum State {
         WAITING_PLAYERS,
@@ -29,20 +31,34 @@ public class Game {
     };
     
     public static void changeState(State newState){
-        log.info(String.format("Changed Game State: %s, New State: %s",Game.currentState, newState));
+        log.finer(String.format("Changed Game State: %s, New State: %s",Game.currentState, newState));
         switch(State.valueOf(newState.name())){
             case WAITING_PLAYERS:
                 gameStarted = false;
+                Game.clearBoard(); 
+                if(currentState == State.TURN_GRAVEL || currentState == State.TURN_SAND){
+                    //Someone left the field, notify the players
+                    if(playerSand != null){
+                        playerSand.sendMessage("Your opponent has left the game area.");
+                    }
+                    if(playerGravel != null){
+                        playerGravel.sendMessage("Your opponent has left the game area.");
+                    }
+                }
                 break;
             case TURN_SAND:
                 if(currentState == State.WAITING_PLAYERS){
                     gameStarted = true;
+                    playerSand.sendMessage("Let the games begin!");
+                    playerGravel.sendMessage("Let the games begin!");
                 }
                 playerSand.sendMessage("It's your turn!");
                 break;
             case TURN_GRAVEL:
                 if(currentState == State.WAITING_PLAYERS){
                     gameStarted = true;
+                    playerSand.sendMessage("Let the games begin!");
+                    playerGravel.sendMessage("Let the games begin!");
                 }
                 playerGravel.sendMessage("It's your turn!");
                 break;
@@ -50,13 +66,23 @@ public class Game {
                 //TODO: Check to see if a player won
                 log.info("TODO: Check to see if a player won");
                 break;
+            case WINNER_GRAVEL:
+                Game.playerGravel.sendMessage("Congratulations! You won! Game will reset in 5 seconds.");
+                Game.playerSand.sendMessage("Gravel has won! Game will reset in 5 seconds.");
+                Game.resetGame(5);
+                break;
+            case WINNER_SAND:
+                Game.playerSand.sendMessage("Congratulations! You won! Game will reset in 5 seconds.");
+                Game.playerGravel.sendMessage("Sand has won! Game will reset in 5 seconds.");
+                Game.resetGame(5);
+                break;
             default:
                 log.info(String.format("Unhandled game state: %s",newState));
                 break;
         }
 
         currentState = newState;
-    }
+    }    
     
     public static void clearBoard(){
         int z = Locations.gridTopLeft.getBlockZ() + 1;
@@ -65,6 +91,20 @@ public class Game {
             for(int x = Locations.gridTopLeft.getBlockX(), xMax = x+7; x<xMax; x++){
                 Block b = Game.world.getBlockAt(x,y,z);
                 b.setType(Material.AIR);
+            }
+        }
+    }
+    
+    //Clear the game after X seconds
+    public static void resetGame(int seconds){
+        ResetGameDelay resetGameDelay = new ResetGameDelay();
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, resetGameDelay, seconds * 20);
+    }
+    private static class ResetGameDelay implements Runnable{
+        public void run(){
+            Game.clearBoard();
+            if(Game.playerGravel != null && Game.playerSand != null){
+                Game.changeState(Game.State.TURN_SAND);
             }
         }
     }
