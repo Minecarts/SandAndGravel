@@ -1,6 +1,8 @@
 package com.minecarts.verrier.sandandgravel.game;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.Material;
 import org.bukkit.World;
 import java.util.logging.Logger;
 
@@ -27,8 +29,8 @@ public class Game {
     };
     
     public static void changeState(State newState){
-        log.info(String.format("Changed Game State: %s",Game.currentState));
-        switch(State.valueOf(currentState.name())){
+        log.info(String.format("Changed Game State: %s, New State: %s",Game.currentState, newState));
+        switch(State.valueOf(newState.name())){
             case WAITING_PLAYERS:
                 gameStarted = false;
                 break;
@@ -54,5 +56,16 @@ public class Game {
         }
 
         currentState = newState;
+    }
+    
+    public static void clearBoard(){
+        int z = Locations.gridTopLeft.getBlockZ() + 1;
+        //Check for horizontal 4 in a row, from the bottom up
+        for(int y = Locations.gridBottomRight.getBlockY(), yMax = y+6; y<yMax; y++){
+            for(int x = Locations.gridTopLeft.getBlockX(), xMax = x+7; x<xMax; x++){
+                Block b = Game.world.getBlockAt(x,y,z);
+                b.setType(Material.AIR);
+            }
+        }
     }
 }

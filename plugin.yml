@@ -8,4 +8,4 @@ description: >
 commands:
   sag:
     description: Main command to access SandAndGravel
-    usage: /<command> [start | stop]
+    usage: /<command> [clear]
