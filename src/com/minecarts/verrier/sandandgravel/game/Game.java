@@ -51,7 +51,7 @@ public class Game {
                 log.info("TODO: Check to see if a player won");
                 break;
             default:
-                log.info(String.format("Unhandled game state: %s",Game.currentState));
+                log.info(String.format("Unhandled game state: %s",newState));
                 break;
         }
 

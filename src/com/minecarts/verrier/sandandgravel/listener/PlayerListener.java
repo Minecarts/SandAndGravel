@@ -29,8 +29,8 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
         
     }
     
-    private void checkWin(Game.State nextTurn){
-        Runnable checkWin = new com.minecarts.verrier.sandandgravel.game.CheckWinThread(plugin, nextTurn);
+    private void checkWin(Game.State nextTurn, int column){
+        Runnable checkWin = new com.minecarts.verrier.sandandgravel.game.CheckWinThread(plugin, nextTurn, column);
         plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, checkWin, 20); //1 second later, should be more for fall time
     }
     
@@ -49,7 +49,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                                 (int)Locations.fallBarLeft.getY(), 
                                 (int)Locations.fallBarLeft.getZ() + 1);
                         dropBlock.setType(Material.SAND);
-                        checkWin(Game.State.TURN_GRAVEL);
+                        checkWin(Game.State.TURN_GRAVEL, targetBlock.getX());
                     }
                     return;
                 }
@@ -62,7 +62,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                                 (int)Locations.fallBarLeft.getY(), 
                                 (int)Locations.fallBarLeft.getZ() + 1);
                         dropBlock.setType(Material.GRAVEL);
-                        checkWin(Game.State.TURN_SAND);
+                        checkWin(Game.State.TURN_SAND, targetBlock.getX());
                     }
                     return;
                 }
