@@ -3,6 +3,7 @@ package com.minecarts.verrier.sandandgravel.listener;
 import com.minecarts.verrier.sandandgravel.*;
 import com.minecarts.verrier.sandandgravel.game.Game;
 import com.minecarts.verrier.sandandgravel.game.Locations;
+import com.minecarts.verrier.sandandgravel.game.MessageFormatter;
 
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -29,10 +30,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
         
     }
     
-    private void checkWin(Game.State nextTurn, int column){
-        Runnable checkWin = new com.minecarts.verrier.sandandgravel.game.CheckWinThread(plugin, nextTurn, column);
-        plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, checkWin, 20); //1 second later, should be more for fall time
-    }
+
         
     public void onPlayerInteract(PlayerInteractEvent event){
         Action playerAction = event.getAction();
@@ -49,8 +47,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                                 (int)Locations.fallBarLeft.getY(), 
                                 (int)Locations.fallBarLeft.getZ() + 1);
                         dropBlock.setType(Material.SAND);
-                        Game.changeState(Game.State.CHECK_WIN);
-                        checkWin(Game.State.TURN_GRAVEL, targetBlock.getX());
+                        Game.checkWin(Game.State.TURN_GRAVEL, targetBlock.getX());
                     }
                     return;
                 }
@@ -63,8 +60,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                                 (int)Locations.fallBarLeft.getY(), 
                                 (int)Locations.fallBarLeft.getZ() + 1);
                         dropBlock.setType(Material.GRAVEL);
-                        Game.changeState(Game.State.CHECK_WIN);
-                        checkWin(Game.State.TURN_SAND, targetBlock.getX());
+                        Game.checkWin(Game.State.TURN_SAND, targetBlock.getX());
                     }
                     return;
                 }
@@ -96,8 +92,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                 if(distanceFromSand > 2.3){
                     //they left
                     Game.playerSand = null;
-                    player.sendMessage("You are no longer the sand player!");
-                    
+                    player.sendMessage(MessageFormatter.player.leftPlayer("sand"));
                     Game.changeState(Game.State.WAITING_PLAYERS);
                 }
             }
@@ -105,10 +100,10 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                 if(distanceFromGravel > 2.3){
                     //they left
                     Game.playerGravel = null;
-                    player.sendMessage("You are no longer the gravel player!");
+                    player.sendMessage(MessageFormatter.player.leftPlayer("gravel"));
+                    
                     //Check to see if the game is running before calling stop? Doesn't matter
                     //  but might be a better option
-                    
                     Game.changeState(Game.State.WAITING_PLAYERS);
                 }
             }
@@ -118,12 +113,12 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                 if(distanceFromSand <= 2.3 && Game.playerSand == null){
                     //They're our new sand player!
                     Game.playerSand = player;
-                    player.sendMessage("You are now the sand player!");
+                    player.sendMessage(MessageFormatter.player.joinPlayer("sand"));
                     plugin.log.info(String.format("%s is now the sand player.",player.getName()));
                 } 
                 else if (distanceFromGravel <= 2.3 && Game.playerGravel == null){
                     Game.playerGravel = player;
-                    player.sendMessage("You are now the gravel player!");
+                    player.sendMessage(MessageFormatter.player.joinPlayer("gravel"));
                     plugin.log.info(String.format("%s is now the gravel player.",player.getName()));
                 }
                 

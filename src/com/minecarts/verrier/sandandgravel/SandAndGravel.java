@@ -23,10 +23,12 @@ public class SandAndGravel extends JavaPlugin  {
     public void onEnable() {
         PluginManager pm = this.getServer().getPluginManager();
         //Let us log all our debug messages
+        /*
         for(Handler h : log.getParent().getHandlers()){
             h.setLevel(Level.ALL);
         }
         log.setLevel(Level.FINER);
+        */
         
         Game.world = this.getServer().getWorld("world");
         Game.plugin = this;
@@ -45,7 +47,7 @@ public class SandAndGravel extends JavaPlugin  {
     public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args){
         if(args.length >= 1){
             if(args[0].equals("clear")){
-                sender.sendMessage("Cleared the board");
+                sender.sendMessage(MessageFormatter.commands.clear);
                 Game.clearBoard();
                 return true;
             } else if (args[0] == "stop"){

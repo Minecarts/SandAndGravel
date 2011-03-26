@@ -39,41 +39,40 @@ public class Game {
                 if(currentState == State.TURN_GRAVEL || currentState == State.TURN_SAND){
                     //Someone left the field, notify the players
                     if(playerSand != null){
-                        playerSand.sendMessage("Your opponent has left the game area.");
+                        playerSand.sendMessage(MessageFormatter.player.opponentLeft);
                     }
                     if(playerGravel != null){
-                        playerGravel.sendMessage("Your opponent has left the game area.");
+                        playerGravel.sendMessage(MessageFormatter.player.opponentLeft);
                     }
                 }
                 break;
             case TURN_SAND:
                 if(currentState == State.WAITING_PLAYERS){
                     gameStarted = true;
-                    playerSand.sendMessage("Let the games begin!");
-                    playerGravel.sendMessage("Let the games begin!");
+                    playerSand.sendMessage(MessageFormatter.game.gameBegin);
+                    playerGravel.sendMessage(MessageFormatter.game.gameBegin);
                 }
-                playerSand.sendMessage("It's your turn!");
+                playerSand.sendMessage(MessageFormatter.game.yourTurn);
                 break;
             case TURN_GRAVEL:
                 if(currentState == State.WAITING_PLAYERS){
                     gameStarted = true;
-                    playerSand.sendMessage("Let the games begin!");
-                    playerGravel.sendMessage("Let the games begin!");
+                    playerSand.sendMessage(MessageFormatter.game.gameBegin);
+                    playerGravel.sendMessage(MessageFormatter.game.gameBegin);
                 }
-                playerGravel.sendMessage("It's your turn!");
+                playerGravel.sendMessage(MessageFormatter.game.yourTurn);
                 break;
             case CHECK_WIN:
-                //TODO: Check to see if a player won
-                log.info("TODO: Check to see if a player won");
+                //Doesn't really do anything, since it's handled in a thread
                 break;
             case WINNER_GRAVEL:
-                Game.playerGravel.sendMessage("Congratulations! You won! Game will reset in 5 seconds.");
-                Game.playerSand.sendMessage("Gravel has won! Game will reset in 5 seconds.");
+                Game.playerGravel.sendMessage(MessageFormatter.game.playerWon("Congratulations! You"));
+                Game.playerSand.sendMessage(MessageFormatter.game.playerWon("Gravel"));
                 Game.resetGame(5);
                 break;
             case WINNER_SAND:
-                Game.playerSand.sendMessage("Congratulations! You won! Game will reset in 5 seconds.");
-                Game.playerGravel.sendMessage("Sand has won! Game will reset in 5 seconds.");
+                Game.playerSand.sendMessage(MessageFormatter.game.playerWon("Congratulations! You"));
+                Game.playerGravel.sendMessage(MessageFormatter.game.playerWon("Sand"));
                 Game.resetGame(5);
                 break;
             default:
@@ -83,6 +82,14 @@ public class Game {
 
         currentState = newState;
     }    
+    
+    
+    public static void checkWin(Game.State nextTurn, int column){
+        Game.changeState(Game.State.CHECK_WIN);
+        Runnable checkWin = new com.minecarts.verrier.sandandgravel.game.CheckWinThread(plugin, nextTurn, column);
+        plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, checkWin, 20); //1 second later, should be more for fall time
+    }
+    
     
     public static void clearBoard(){
         int z = Locations.gridTopLeft.getBlockZ() + 1;
