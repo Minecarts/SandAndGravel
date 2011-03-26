@@ -1,6 +1,6 @@
 package com.minecarts.verrier.sandandgravel;
 
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,12 +16,32 @@ import org.bukkit.entity.Player;
 import com.minecarts.verrier.sandandgravel.listener.*;
 import com.minecarts.verrier.sandandgravel.game.*;
 
+class PluginFormatter extends Formatter{
+    private String name;
+    public PluginFormatter(String name){
+        this.name = name;
+    }
+    @Override
+    public String format(LogRecord rec) {
+        return String.format("[%s] %s> %s",
+                    name,
+                    rec.getLevel().getLocalizedName().toUpperCase(),
+                    rec.getMessage()
+                );
+    }
+}
+
 public class SandAndGravel extends JavaPlugin  {
-    public final Logger log = Logger.getLogger("Minecraft.SandAndGravel");
+    public Logger log = Logger.getLogger("com.minecarts.sandandgravel");
     private PlayerListener playerListener = new PlayerListener(this);
         
     public void onEnable() {
         PluginManager pm = this.getServer().getPluginManager();
+        //Let us log all our debug messages
+        for(Handler h : log.getParent().getHandlers()){
+            h.setLevel(Level.ALL);
+        }
+        log.setLevel(Level.ALL);
     
         Game.world = this.getServer().getWorld("world");
         
@@ -29,6 +49,7 @@ public class SandAndGravel extends JavaPlugin  {
         pm.registerEvent(Type.PLAYER_MOVE, this.playerListener, Event.Priority.Monitor, this);
         pm.registerEvent(Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Monitor, this);
         
+        log.log(Level.FINE,"Testing!");
         //Also check if any players are currently standing in the position
     }
       
@@ -43,7 +64,7 @@ public class SandAndGravel extends JavaPlugin  {
                 Game.clearBoard();
                 return true;
             } else if (args[0] == "stop"){
-                
+
             }
         }
         return false;
