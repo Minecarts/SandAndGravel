@@ -33,8 +33,11 @@ public class MessageFormatter {
         public static String yourTurn = format("It is now your turn.");
         public static String notYourTurn = format("It is NOT your turn.");
         
-        public static String playerWon(String player){
-            return format(String.format("%s won! Game will reset in 5 seconds."));
+        public static String playerWaiting(String type){
+            return format(String.format("You are waiting for a %s player.",type));
+        }
+        public static String playerWon(String type){
+            return format(String.format("%s won! Game will reset in 5 seconds.",type));
         }
     }
     
