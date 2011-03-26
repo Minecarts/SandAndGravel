@@ -13,16 +13,6 @@ public class CheckWinThread implements Runnable {
     
     private Game.State nextTurn = Game.State.TURN_GRAVEL;
     private int column; //Column where the last block was placed
-
-    private final Vector checkHorizRight = new Vector(1,0,0); 
-    private final Vector checkHorizLeft = new Vector(-1,0,0);
-    private final Vector checkVertUp = new Vector(0,1,0);
-    private final Vector checkVertDown = new Vector(0,-1,0);
-    private final Vector checkUpLeft = new Vector(-1,1,0);
-    private final Vector checkUpRight = new Vector(1,1,0);
-    private final Vector checkDownLeft = new Vector(1,-1,0);
-    private final Vector checkDownRight = new Vector(-1,-1,0);
-    
     
     public CheckWinThread(SandAndGravel plugin, Game.State nextTurn, int column){
         this.plugin = plugin;
@@ -68,16 +58,16 @@ public class CheckWinThread implements Runnable {
             if(blockType == Material.SAND || blockType == Material.GRAVEL){
                 //We have our top block, the one that was just placed
                 try{
-                    findMove(b.getLocation().toVector(),checkHorizRight,1,blockType); // +x
-                    findMove(b.getLocation().toVector(),checkHorizLeft,1,blockType); // -x
+                    findMove(b.getLocation().toVector(),new Vector(1,0,0),1,blockType); // +x
+                    findMove(b.getLocation().toVector(),new Vector(-1,0,0),1,blockType); // -x
     
-                    findMove(b.getLocation().toVector(),checkVertUp,1,blockType); // +y
-                    findMove(b.getLocation().toVector(),checkVertDown,1,blockType); // -y
+                    findMove(b.getLocation().toVector(),new Vector(0,1,0),1,blockType); // +y
+                    findMove(b.getLocation().toVector(),new Vector(0,-1,0),1,blockType); // -y
                     
-                    findMove(b.getLocation().toVector(),checkUpLeft,1,blockType);
-                    findMove(b.getLocation().toVector(),checkUpRight,1,blockType); 
-                    findMove(b.getLocation().toVector(),checkDownLeft,1,blockType); 
-                    findMove(b.getLocation().toVector(),checkDownRight,1,blockType); 
+                    findMove(b.getLocation().toVector(),new Vector(-1,1,0),1,blockType);
+                    findMove(b.getLocation().toVector(),new Vector(1,1,0),1,blockType); 
+                    findMove(b.getLocation().toVector(),new Vector(1,-1,0),1,blockType); 
+                    findMove(b.getLocation().toVector(),new Vector(-1,-1,0),1,blockType); 
                 } catch(WinnerException e){ //We have a wining move!
                     //Change the blocks to gold blocks
                     for(int i = 0; i<4;i++){
@@ -90,8 +80,10 @@ public class CheckWinThread implements Runnable {
                     
                     if(e.blockType == Material.GRAVEL){
                         Game.changeState(Game.State.WINNER_GRAVEL);
+                        return;
                     } else if (e.blockType == Material.SAND){
                         Game.changeState(Game.State.WINNER_SAND);
+                        return;
                     } else {
                         plugin.log.warning("Unknown SandAndGravel block for winner: " + e.blockType);
                     }
@@ -115,6 +107,6 @@ public class CheckWinThread implements Runnable {
         
         
         //Else, no one won, so next turn it up
-        Game.currentState = nextTurn;
+        Game.changeState(nextTurn);
     }
 }
