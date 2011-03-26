@@ -36,38 +36,40 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
     
     public void onPlayerInteract(PlayerInteractEvent event){
         Action playerAction = event.getAction();
-        if(playerAction == Action.LEFT_CLICK_AIR && Game.playerSand != null && Game.playerGravel != null){
+        if(playerAction == Action.LEFT_CLICK_AIR){
             Player player = event.getPlayer();
-            if(player == Game.playerSand && Game.currentState == Game.State.TURN_SAND){
-                //Check that they clicked on the board
-                Block targetBlock = player.getTargetBlock(null,40);
-                
-                //Check that they clicked on the board (TODO: Y direction)
-                if(targetBlock.getX() >= Locations.fallBarLeft.getX() && targetBlock.getX() <= Locations.fallBarRight.getX()){
-                    Block dropBlock = Game.world.getBlockAt(
-                            targetBlock.getX(), 
-                            (int)Locations.fallBarLeft.getY(), 
-                            (int)Locations.fallBarLeft.getZ() + 1);
-                    dropBlock.setType(Material.SAND);
-                    checkWin(Game.State.TURN_GRAVEL);
+            if(Game.playerSand != null && Game.playerGravel != null){
+                if(player == Game.playerSand && Game.currentState == Game.State.TURN_SAND){
+                    Block targetBlock = player.getTargetBlock(null,40);
+                    
+                    //Check that they clicked on the board (TODO: Y direction)
+                    if(targetBlock.getX() >= Locations.fallBarLeft.getX() && targetBlock.getX() <= Locations.fallBarRight.getX()){
+                        Block dropBlock = Game.world.getBlockAt(
+                                targetBlock.getX(), 
+                                (int)Locations.fallBarLeft.getY(), 
+                                (int)Locations.fallBarLeft.getZ() + 1);
+                        dropBlock.setType(Material.SAND);
+                        checkWin(Game.State.TURN_GRAVEL);
+                    }
+                    return;
                 }
-                return;
-            }
-            
-            if(player == Game.playerGravel && Game.currentState == Game.State.TURN_GRAVEL){
-                //Check that they clicked on the board
-                Block targetBlock = player.getTargetBlock(null,40);
-                
-                //Check that they clicked on the board (TODO: Y direction)
-                if(targetBlock.getX() >= Locations.fallBarLeft.getX() && targetBlock.getX() <= Locations.fallBarRight.getX()){
-                    Block dropBlock = Game.world.getBlockAt(
-                            targetBlock.getX(), 
-                            (int)Locations.fallBarLeft.getY(), 
-                            (int)Locations.fallBarLeft.getZ() + 1);
-                    dropBlock.setType(Material.GRAVEL);
-                    checkWin(Game.State.TURN_SAND);
+                if(player == Game.playerGravel && Game.currentState == Game.State.TURN_GRAVEL){
+                    Block targetBlock = player.getTargetBlock(null,40);
+                    //Check that they clicked on the board (TODO: Y direction)
+                    if(targetBlock.getX() >= Locations.fallBarLeft.getX() && targetBlock.getX() <= Locations.fallBarRight.getX()){
+                        Block dropBlock = Game.world.getBlockAt(
+                                targetBlock.getX(), 
+                                (int)Locations.fallBarLeft.getY(), 
+                                (int)Locations.fallBarLeft.getZ() + 1);
+                        dropBlock.setType(Material.GRAVEL);
+                        checkWin(Game.State.TURN_SAND);
+                    }
+                    return;
                 }
-                return;
+            } else if(Game.playerSand == event.getPlayer() && Game.playerGravel == null){
+                player.sendMessage("Waiting for a gravel player.");
+            } else if (Game.playerGravel == event.getPlayer() && Game.playerSand == null){
+                player.sendMessage("Waiting for a sand player.");
             }
         }
     }//onPlayerInteract()
