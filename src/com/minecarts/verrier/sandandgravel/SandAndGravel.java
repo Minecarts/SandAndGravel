@@ -16,21 +16,6 @@ import org.bukkit.entity.Player;
 import com.minecarts.verrier.sandandgravel.listener.*;
 import com.minecarts.verrier.sandandgravel.game.*;
 
-class PluginFormatter extends Formatter{
-    private String name;
-    public PluginFormatter(String name){
-        this.name = name;
-    }
-    @Override
-    public String format(LogRecord rec) {
-        return String.format("[%s] %s> %s",
-                    name,
-                    rec.getLevel().getLocalizedName().toUpperCase(),
-                    rec.getMessage()
-                );
-    }
-}
-
 public class SandAndGravel extends JavaPlugin  {
     public Logger log = Logger.getLogger("com.minecarts.sandandgravel");
     private PlayerListener playerListener = new PlayerListener(this);
@@ -41,15 +26,14 @@ public class SandAndGravel extends JavaPlugin  {
         for(Handler h : log.getParent().getHandlers()){
             h.setLevel(Level.ALL);
         }
-        log.setLevel(Level.ALL);
-    
+        log.setLevel(Level.FINER);
+        
         Game.world = this.getServer().getWorld("world");
         
         //Add our listeners
         pm.registerEvent(Type.PLAYER_MOVE, this.playerListener, Event.Priority.Monitor, this);
         pm.registerEvent(Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Monitor, this);
-        
-        log.log(Level.FINE,"Testing!");
+
         //Also check if any players are currently standing in the position
     }
       
