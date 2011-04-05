@@ -46,11 +46,24 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                         Locations.gridTopLeft.getBlockZ() + 1);
                     
                     if(player == Game.playerSand && Game.currentState == Game.State.TURN_SAND){
+                    	//Check to see if this column is full
+                    	//	we have to do it here because it has to be that players turn
+                    	//	to send the message
+                    	if(Game.countColumn(targetBlock.getX()) >= 6){
+                    		player.sendMessage(MessageFormatter.game.maxColumn);
+                    		return;
+                    	}
+                    	
                         dropBlock.setType(Material.SAND);
                         Game.checkWin(Game.State.TURN_GRAVEL, targetBlock.getX());
                         return;
                     }
                     if(player == Game.playerGravel && Game.currentState == Game.State.TURN_GRAVEL){
+                    	if(Game.countColumn(targetBlock.getX()) >= 6){
+                    		player.sendMessage(MessageFormatter.game.maxColumn);
+                    		return;
+                    	}
+                    	
                         dropBlock.setType(Material.GRAVEL);
                         Game.checkWin(Game.State.TURN_SAND, targetBlock.getX());
                         return;

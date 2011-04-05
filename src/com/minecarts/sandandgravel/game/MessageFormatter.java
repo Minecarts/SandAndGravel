@@ -32,6 +32,8 @@ public class MessageFormatter {
         public static String gameBegin = format(ChatColor.YELLOW + "Both players are READY! Lets the games begin!");
         public static String yourTurn = format("It is now your turn.");
         public static String notYourTurn = format("It is NOT your turn.");
+        public static String gameTie = format("The game was a tie.");
+        public static String maxColumn = format("That column is full.");
         
         public static String playerWaiting(String type){
             return format(String.format("You are waiting for a %s player.",type));

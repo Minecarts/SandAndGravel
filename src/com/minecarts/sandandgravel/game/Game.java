@@ -38,27 +38,27 @@ public class Game {
                 Game.clearBoard(); 
                 if(currentState == State.TURN_GRAVEL || currentState == State.TURN_SAND){
                     //Someone left the field, notify the players
-                    if(playerSand != null){
-                        playerSand.sendMessage(MessageFormatter.player.opponentLeft);
+                    if(Game.playerSand != null){
+                    	Game.playerSand.sendMessage(MessageFormatter.player.opponentLeft);
                     }
-                    if(playerGravel != null){
-                        playerGravel.sendMessage(MessageFormatter.player.opponentLeft);
+                    if(Game.playerGravel != null){
+                    	Game.playerGravel.sendMessage(MessageFormatter.player.opponentLeft);
                     }
                 }
                 break;
             case TURN_SAND:
                 if(currentState == State.WAITING_PLAYERS){
                     gameStarted = true;
-                    playerSand.sendMessage(MessageFormatter.game.gameBegin);
-                    playerGravel.sendMessage(MessageFormatter.game.gameBegin);
+                    Game.playerSand.sendMessage(MessageFormatter.game.gameBegin);
+                    Game.playerGravel.sendMessage(MessageFormatter.game.gameBegin);
                 }
                 playerSand.sendMessage(MessageFormatter.game.yourTurn);
                 break;
             case TURN_GRAVEL:
                 if(currentState == State.WAITING_PLAYERS){
                     gameStarted = true;
-                    playerSand.sendMessage(MessageFormatter.game.gameBegin);
-                    playerGravel.sendMessage(MessageFormatter.game.gameBegin);
+                    Game.playerSand.sendMessage(MessageFormatter.game.gameBegin);
+                    Game.playerGravel.sendMessage(MessageFormatter.game.gameBegin);
                 }
                 playerGravel.sendMessage(MessageFormatter.game.yourTurn);
                 break;
@@ -75,6 +75,11 @@ public class Game {
                 //TODO: Keep track of score (per player)
                 Game.playerSand.sendMessage(MessageFormatter.game.playerWon("Congratulations! You"));
                 Game.playerGravel.sendMessage(MessageFormatter.game.playerWon("Sand"));
+                Game.resetGame(5);
+                break;
+            case GAME_TIE:
+            	Game.playerSand.sendMessage(MessageFormatter.game.gameTie);
+                Game.playerGravel.sendMessage(MessageFormatter.game.gameTie);
                 Game.resetGame(5);
                 break;
             default:
@@ -101,6 +106,23 @@ public class Game {
         }
     }
 
+    
+    //Counts the number of peices in a column
+    //	used to prevent "overfilling" a colum
+    //	Columns are 0 indexed
+    public static int countColumn(int targetColumnX){
+    	int columnSize = 0;
+    	int z = Locations.gridTopLeft.getBlockZ() + 1;
+    	for(int y = Locations.gridBottomRight.getBlockY(), yMax = y+6; y<yMax; y++){
+    		 Block b = Game.world.getBlockAt(targetColumnX,y,z);
+             Material blockType = b.getType();
+             if(blockType == Material.SAND || blockType == Material.GRAVEL){
+            	 columnSize++;
+             }
+    	}
+    	return columnSize;
+    }
+    
     //Clear the game after X seconds
     public static void resetGame(int seconds){
         ResetGameDelay resetGameDelay = new ResetGameDelay();
@@ -110,6 +132,9 @@ public class Game {
         public void run(){
             Game.clearBoard();
             if(Game.playerGravel != null && Game.playerSand != null){
+                Game.playerSand.sendMessage(MessageFormatter.game.gameBegin);
+                Game.playerGravel.sendMessage(MessageFormatter.game.gameBegin);
+                
                 Game.changeState(Game.State.TURN_SAND);
             }
         }

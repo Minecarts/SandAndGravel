@@ -73,8 +73,7 @@ public class CheckWinThread implements Runnable {
                         Block bl = Game.world.getBlockAt(b.getLocation().toVector().add(temp.multiply(i)).toLocation(Game.world));
                         plugin.log.finest(String.format("[%s] Setting block %s, %s, %s [%s]", i, bl.getLocation().getBlockX(), bl.getLocation().getBlockY(), bl.getLocation().getBlockZ(), e.direction));
                         bl.setType(Material.DIAMOND_BLOCK);
-                       
-                    }                    
+                    }
                     
                     if(e.blockType == Material.GRAVEL){
                         Game.changeState(Game.State.WINNER_GRAVEL);
@@ -97,8 +96,10 @@ public class CheckWinThread implements Runnable {
         //  we can do this by seeing if there are any spaces free at the top most layer
         for(int x = Locations.gridTopLeft.getBlockX(), xMax = x+7; x<xMax; x++){
             Block b = Game.world.getBlockAt(x,Locations.gridTopLeft.getBlockY(),z);
+            plugin.log.finer("Checking block for full: " + b.getType());
             if(b.getType() == Material.SAND || b.getType() == Material.GRAVEL){
-                if(++usedBlocks == 7) Game.currentState = Game.State.GAME_TIE;
+                if(++usedBlocks == 7) Game.changeState(Game.State.GAME_TIE);
+                return;
             }
         }
         

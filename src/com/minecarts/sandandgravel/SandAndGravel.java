@@ -23,12 +23,12 @@ public class SandAndGravel extends JavaPlugin  {
     public void onEnable() {
         PluginManager pm = this.getServer().getPluginManager();
         //Let us log all our debug messages
-        /*
+        
         for(Handler h : log.getParent().getHandlers()){
             h.setLevel(Level.ALL);
         }
         log.setLevel(Level.FINER);
-        */
+        
         
         Game.world = this.getServer().getWorld("world");
         Game.plugin = this;
@@ -38,6 +38,7 @@ public class SandAndGravel extends JavaPlugin  {
         pm.registerEvent(Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Monitor, this);
 
         //TODO: Also check if any players are currently standing in the position
+        log.info("SandAndGravel Loaded");
     }
       
        
