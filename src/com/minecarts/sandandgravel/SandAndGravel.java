@@ -18,10 +18,11 @@ import com.minecarts.sandandgravel.listener.*;
 
 public class SandAndGravel extends JavaPlugin  {
     public Logger log = Logger.getLogger("com.minecarts.sandandgravel");
+    public PluginManager pm;
     private PlayerListener playerListener = new PlayerListener(this);
         
     public void onEnable() {
-        PluginManager pm = this.getServer().getPluginManager();
+        pm = this.getServer().getPluginManager();
         //Let us log all our debug messages
         
         for(Handler h : log.getParent().getHandlers()){

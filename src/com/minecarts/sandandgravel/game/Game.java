@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.Material;
 import org.bukkit.World;
 
+import com.minecarts.sandandgravel.event.*;
+
 import java.util.logging.Logger;
 
 public class Game {
@@ -66,18 +68,19 @@ public class Game {
                 //Doesn't really do anything, since it's handled in a thread
                 break;
             case WINNER_GRAVEL:
-                //TODO: Keep track of score (per player)
+                plugin.pm.callEvent(new GameCompleteEvent(currentState, Game.playerSand, Game.playerGravel));
                 Game.playerGravel.sendMessage(MessageFormatter.game.playerWon("Congratulations! You"));
                 Game.playerSand.sendMessage(MessageFormatter.game.playerWon("Gravel"));
                 Game.resetGame(5);
                 break;
             case WINNER_SAND:
-                //TODO: Keep track of score (per player)
+                plugin.pm.callEvent(new GameCompleteEvent(currentState, Game.playerSand, Game.playerGravel));
                 Game.playerSand.sendMessage(MessageFormatter.game.playerWon("Congratulations! You"));
                 Game.playerGravel.sendMessage(MessageFormatter.game.playerWon("Sand"));
                 Game.resetGame(5);
                 break;
             case GAME_TIE:
+                plugin.pm.callEvent(new GameCompleteEvent(currentState, Game.playerSand, Game.playerGravel));
             	Game.playerSand.sendMessage(MessageFormatter.game.gameTie);
                 Game.playerGravel.sendMessage(MessageFormatter.game.gameTie);
                 Game.resetGame(5);
