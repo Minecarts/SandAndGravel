@@ -98,8 +98,10 @@ public class CheckWinThread implements Runnable {
             Block b = Game.world.getBlockAt(x,Locations.gridTopLeft.getBlockY(),z);
             plugin.log.finer("Checking block for full: " + b.getType());
             if(b.getType() == Material.SAND || b.getType() == Material.GRAVEL){
-                if(++usedBlocks == 7) Game.changeState(Game.State.GAME_TIE);
-                return;
+                if(++usedBlocks == 7){
+                    Game.changeState(Game.State.GAME_TIE);
+                    return;
+                }
             }
         }
         

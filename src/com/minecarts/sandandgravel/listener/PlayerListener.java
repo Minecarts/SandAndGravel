@@ -44,7 +44,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                         targetBlock.getX(), 
                         Locations.gridTopLeft.getBlockY() + 1,
                         Locations.gridTopLeft.getBlockZ() + 1);
-                    
+
                     if(player == Game.playerSand && Game.currentState == Game.State.TURN_SAND){
                     	//Check to see if this column is full
                     	//	we have to do it here because it has to be that players turn
@@ -67,6 +67,12 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
                         dropBlock.setType(Material.GRAVEL);
                         Game.checkWin(Game.State.TURN_SAND, targetBlock.getX());
                         return;
+                    }
+
+                    //And display it's not your turn
+                    if((player == Game.playerGravel && Game.currentState == Game.State.TURN_SAND) || 
+                       (player == Game.playerSand && Game.currentState == Game.State.TURN_GRAVEL)){
+                        player.sendMessage(MessageFormatter.game.notYourTurn);
                     }
                 }
             } else if(Game.playerSand == event.getPlayer() && Game.playerGravel == null){
