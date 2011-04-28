@@ -24,14 +24,14 @@ public class SandAndGravel extends JavaPlugin  {
     public void onEnable() {
         pm = this.getServer().getPluginManager();
         //Let us log all our debug messages
-        
+        /*
         for(Handler h : log.getParent().getHandlers()){
             h.setLevel(Level.ALL);
         }
         log.setLevel(Level.FINER);
+        */
         
-        
-        Game.world = this.getServer().getWorld("world");
+        Game.world = this.getServer().getWorlds().get(0);
         Game.plugin = this;
         
         //Add our listeners

@@ -95,7 +95,7 @@ public class Game {
     public static void checkWin(Game.State nextTurn, int column){
         Game.changeState(Game.State.CHECK_WIN);
         Runnable checkWin = new com.minecarts.sandandgravel.game.CheckWinThread(plugin, nextTurn, column);
-        plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, checkWin, 20); //1 second later, should be more for fall time
+        plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, checkWin, 40); //1 second later, should be more for fall time
     }
 
     public static void clearBoard(){
