@@ -27,6 +27,10 @@ public class GameCompleteEvent extends Event implements Cancellable
         return this.gravel;
     }
     
+    public State getGameState(){
+        return this.gameState;
+    }
+    
     public boolean isCancelled(){ return this.cancel; }
     public void setCancelled(boolean cancel){ this.cancel = cancel; }
 }

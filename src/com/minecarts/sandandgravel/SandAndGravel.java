@@ -8,6 +8,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -23,6 +24,7 @@ public class SandAndGravel extends JavaPlugin  {
         
     public void onEnable() {
         pm = this.getServer().getPluginManager();
+        PluginDescriptionFile pdf = getDescription();
         //Let us log all our debug messages
         /*
         for(Handler h : log.getParent().getHandlers()){
@@ -39,7 +41,7 @@ public class SandAndGravel extends JavaPlugin  {
         pm.registerEvent(Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Monitor, this);
 
         //TODO: Also check if any players are currently standing in the position
-        log.info("SandAndGravel Loaded");
+        log.info("[" + pdf.getName() + "] version " + pdf.getVersion() + " enabled.");
     }
       
        

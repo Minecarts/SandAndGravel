@@ -25,7 +25,7 @@ public class CheckWinThread implements Runnable {
         plugin.log.finest(String.format("Looking for [%s]: %s, %s, %s (%s) [Move: %s]",blockType,position.getBlockX(), position.getBlockY(), position.getBlockZ(),b.getType(),moves));
         if(b.getType() == blockType){
             if(moves == 4){
-                plugin.log.finest("WINNING MOVE FOUND! Direction: " + direction);
+                //plugin.log.finest("WINNING MOVE FOUND! Direction: " + direction);
                 throw new WinnerException(blockType, direction);
             } else {
                 return findMove(position.add(direction),direction,++moves,blockType);
@@ -96,7 +96,7 @@ public class CheckWinThread implements Runnable {
         //  we can do this by seeing if there are any spaces free at the top most layer
         for(int x = Locations.gridTopLeft.getBlockX(), xMax = x+7; x<xMax; x++){
             Block b = Game.world.getBlockAt(x,Locations.gridTopLeft.getBlockY(),z);
-            plugin.log.finer("Checking block for full: " + b.getType());
+            //plugin.log.finer("Checking block for full: " + b.getType());
             if(b.getType() == Material.SAND || b.getType() == Material.GRAVEL){
                 if(++usedBlocks == 7){
                     Game.changeState(Game.State.GAME_TIE);

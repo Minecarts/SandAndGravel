@@ -33,7 +33,7 @@ public class Game {
     };
 
     public static void changeState(State newState){
-        log.finer(String.format("Changed Game State: %s, New State: %s",Game.currentState, newState));
+        //log.finer(String.format("Changed Game State: %s, New State: %s",Game.currentState, newState));
         switch(State.valueOf(newState.name())){
             case WAITING_PLAYERS:
                 gameStarted = false;
@@ -68,19 +68,19 @@ public class Game {
                 //Doesn't really do anything, since it's handled in a thread
                 break;
             case WINNER_GRAVEL:
-                plugin.pm.callEvent(new GameCompleteEvent(currentState, Game.playerSand, Game.playerGravel));
+                plugin.pm.callEvent(new GameCompleteEvent(newState, Game.playerSand, Game.playerGravel));
                 Game.playerGravel.sendMessage(MessageFormatter.game.playerWon("Congratulations! You"));
                 Game.playerSand.sendMessage(MessageFormatter.game.playerWon("Gravel"));
                 Game.resetGame(5);
                 break;
             case WINNER_SAND:
-                plugin.pm.callEvent(new GameCompleteEvent(currentState, Game.playerSand, Game.playerGravel));
+                plugin.pm.callEvent(new GameCompleteEvent(newState, Game.playerSand, Game.playerGravel));
                 Game.playerSand.sendMessage(MessageFormatter.game.playerWon("Congratulations! You"));
                 Game.playerGravel.sendMessage(MessageFormatter.game.playerWon("Sand"));
                 Game.resetGame(5);
                 break;
             case GAME_TIE:
-                plugin.pm.callEvent(new GameCompleteEvent(currentState, Game.playerSand, Game.playerGravel));
+                plugin.pm.callEvent(new GameCompleteEvent(newState, Game.playerSand, Game.playerGravel));
             	Game.playerSand.sendMessage(MessageFormatter.game.gameTie);
                 Game.playerGravel.sendMessage(MessageFormatter.game.gameTie);
                 Game.resetGame(5);
