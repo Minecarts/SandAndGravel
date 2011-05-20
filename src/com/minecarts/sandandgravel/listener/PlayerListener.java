@@ -8,6 +8,7 @@ import com.minecarts.sandandgravel.game.MessageFormatter;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,7 +30,18 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
         playerLocationGravel = com.minecarts.sandandgravel.game.Locations.playerLocationGravel;
         
     }
-    
+
+    @Override
+    public void onPlayerQuit(PlayerQuitEvent event){
+        String playerName = event.getPlayer().getName();
+        if(Game.playerSand != null && playerName.equals(Game.playerSand.getName())){
+                Game.changeState(Game.State.WAITING_PLAYERS);
+                Game.playerSand = null;
+        } else if(Game.playerGravel != null && playerName.equals(Game.playerGravel.getName())){
+            Game.changeState(Game.State.WAITING_PLAYERS);
+            Game.playerGravel = null;
+        }
+    }
 
         
     public void onPlayerInteract(PlayerInteractEvent event){

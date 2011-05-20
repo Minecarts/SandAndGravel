@@ -39,6 +39,7 @@ public class SandAndGravel extends JavaPlugin  {
         //Add our listeners
         pm.registerEvent(Type.PLAYER_MOVE, this.playerListener, Event.Priority.Monitor, this);
         pm.registerEvent(Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Monitor, this);
+        pm.registerEvent(Type.PLAYER_QUIT, this.playerListener, Event.Priority.Monitor, this);
 
         //TODO: Also check if any players are currently standing in the position
         log.info("[" + pdf.getName() + "] version " + pdf.getVersion() + " enabled.");
