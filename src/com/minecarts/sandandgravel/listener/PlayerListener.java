@@ -103,6 +103,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener{
         Location newLocation = event.getTo();
         Vector newVector = newLocation.toVector(); 
         
+        if(!player.getWorld().getName().equalsIgnoreCase("world")) return;
         
         Double distanceFromSand = newVector.distance(playerLocationSand);
         Double distanceFromGravel = newVector.distance(playerLocationGravel);
